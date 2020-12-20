@@ -6,20 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class StationRepositoryTest {
     @Autowired
     private StationRepository stationRepository;
 
-    @DisplayName("StationRepository - 조회 테스트")
+    @Autowired
+    private LineRepository lineRepository;
+
+    @DisplayName("StationRepository - save 테스트")
     @Test
-    public void findTest() {
-        assertThatThrownBy(() ->
-                stationRepository.findById(1L)
-                        .orElseThrow(IllegalArgumentException::new))
-                .isInstanceOf(IllegalArgumentException.class);
+    void saveTest() {
+        Line sevenLine = lineRepository.save(Line.of("녹색", "7호선"));
+        Line fiveLine = lineRepository.save(Line.of("보라색", "5호선"));
+
+        Station savedStation = Station.of("군자역");
+        savedStation.addLine(sevenLine);
+        savedStation.addLine(fiveLine);
+
+        // doesn't show mapping table insert query
+        stationRepository.save(savedStation);
     }
 }

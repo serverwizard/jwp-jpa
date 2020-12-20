@@ -4,4 +4,10 @@ spring:
     properties: # TODO 트래킹
       hibernate:
         format_sql: true
-#        dialect: org.hibernate.dialectMySQL57Dialect
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+
+  h2:
+    console:
+      enabled: true

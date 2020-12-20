@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "line", indexes = {@Index(name = "UK_line_name", columnList = "name", unique = true)})
+@Table(name = "line", indexes = {
+        @Index(name = "UK_line_name", columnList = "name", unique = true)
+})
 public class Line {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,10 @@ public class Line {
 
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
+
+    // TODO 문제 발생하는 것을 확인하기 위해 private 선언
+    private Line() {
+    }
 
     private Line(String color,
                  String name) {
@@ -45,4 +51,14 @@ public class Line {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Line{" +
+                "id=" + id +
+                ", color='" + color + '\'' +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                '}';
+    }
 }
