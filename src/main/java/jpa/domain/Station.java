@@ -2,6 +2,9 @@ package jpa.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +16,8 @@ import java.util.List;
 @Table(name = "station", indexes = {
         @Index(name = "UK_station_name", columnList = "name", unique = true)
 })
+@Audited
+@AuditTable("station_audit")
 public class Station {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +28,7 @@ public class Station {
     private String name;
 
     // TODO ManyToMany 사용법 확인 => 추후 변경 해야 함
+    @NotAudited
     @ManyToMany
     @JoinTable(name = "station_line", joinColumns = @JoinColumn(name = "station_id"), inverseJoinColumns = @JoinColumn(name = "line_id"))
     private List<Line> lines = new ArrayList<>();
